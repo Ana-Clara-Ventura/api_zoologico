@@ -3,6 +3,8 @@ import cors from 'cors';
 import { Ave } from './model/Ave';
 import { Mamifero } from './model/Mamifero';
 import { Reptil } from './model/Reptil';
+import { Habitat } from "./model/Habitat";
+import { Animal } from "./model/Animal";
 
 
 const server = express();
@@ -15,8 +17,10 @@ server.use(cors());
 server.get('/', (req, res) => {
     let ave: Ave = new Ave(`Papagaio`, 30, `Masculino`, 10);
     let reptil: Reptil = new Reptil('Lagarto', 2, 'Femea', 'Cicloides');
-    let mamifero: Mamifero = new Mamifero('Doberman', 'Cachorro', 102, 'Femea')
-    res.json([ave, reptil, mamifero]);
+    let mamifero: Mamifero = new Mamifero('Doberman', 'Cachorro', 102, 'Femea');
+    let habitat: Habitat = new Habitat ("Iceberg", mamifero);
+    res.json([ave, reptil, mamifero, habitat]);
+
 })
 
 server.listen(port, () => {

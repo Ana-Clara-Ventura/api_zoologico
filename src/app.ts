@@ -5,6 +5,8 @@ import { Mamifero } from './model/Mamifero';
 import { Reptil } from './model/Reptil';
 import { Habitat } from "./model/Habitat";
 import { Animal } from "./model/Animal";
+import { Atracao } from "./model/Atracao";
+import { Zoologico } from "./model/Zoologico";
 
 
 const server = express();
@@ -29,8 +31,24 @@ server.listen(port, () => {
 
 const habitat = new Habitat('Selva', [])
 
-server.post('/ave', (req, res) => {
-    const { nome, idade, genero, envergadura } = req.body;
-    const ave = new Ave(nome, idade, genero, envergadura);
-    res.json({ mensagem: "A nova ave do zoológico é:", ave })
+server.post('/habitat', (req, res) =>{
+    const { nome, animais} = req.body;
+    const habitat = new Habitat(nome, animais);
+    console.log(habitat);
+    res.status(200).json('Habitat criado');
 })
+
+server.post('/atracao', (req, res) =>{
+    const { nome, habitat} = req.body;
+    const atracao = new Atracao(nome, habitat);
+    console.log(atracao);
+    res.status(200).json('Atração criada');
+})
+
+server.post('/zoologico', (req, res) =>{
+    const { nome, atracao} = req.body;
+    const zoologico = new Zoologico(nome, atracao);
+    console.log(zoologico);
+    res.status(200).json('Zoologico criado');
+})
+

@@ -18,7 +18,7 @@ server.get('/', (req, res) => {
     let ave: Ave = new Ave(`Papagaio`, 30, `Masculino`, 10);
     let reptil: Reptil = new Reptil('Lagarto', 2, 'Femea', 'Cicloides');
     let mamifero: Mamifero = new Mamifero('Doberman', 'Cachorro', 102, 'Femea');
-    let habitat: Habitat = new Habitat ("Iceberg", mamifero);
+    let habitat: Habitat = new Habitat ("Iceberg", [mamifero]);
     res.json([ave, reptil, mamifero, habitat]);
 
 })
@@ -26,6 +26,8 @@ server.get('/', (req, res) => {
 server.listen(port, () => {
     console.log(`Servidor esta escutando no endereço http://localhost:${port}`);
 })
+
+const habitat = new Habitat('Selva', [])
 
 server.post('/ave', (req, res) => {
     const { nome, idade, genero, envergadura } = req.body;

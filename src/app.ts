@@ -1,54 +1,54 @@
 import express from "express";
-import cors from 'cors';
-import { Ave } from './model/Ave';
-import { Mamifero } from './model/Mamifero';
-import { Reptil } from './model/Reptil';
+import cors from "cors";
 import { Habitat } from "./model/Habitat";
-import { Animal } from "./model/Animal";
 import { Atracao } from "./model/Atracao";
 import { Zoologico } from "./model/Zoologico";
-
+import { DatabaseModel } from "./model/DatabaseModel";
+import { Reptil } from "./model/Reptil";
 
 const server = express();
-const port = 3000;
-
+const port: number = 3000;
 
 server.use(express.json());
 server.use(cors());
 
 server.get('/', (req, res) => {
-    let ave: Ave = new Ave(`Papagaio`, 30, `Masculino`, 10);
-    let reptil: Reptil = new Reptil('Lagarto', 2, 'Femea', 'Cicloides');
-    let mamifero: Mamifero = new Mamifero('Doberman', 'Cachorro', 102, 'Femea');
-    let habitat: Habitat = new Habitat ("Iceberg", [mamifero]);
-    res.json([ave, reptil, mamifero, habitat]);
+    res.json("ola");
+});
 
-})
-
-server.listen(port, () => {
-    console.log(`Servidor esta escutando no endereço http://localhost:${port}`);
-})
-
-const habitat = new Habitat('Selva', [])
-
-server.post('/habitat', (req, res) =>{
-    const { nome, animais} = req.body;
+server.post('/habitat', (req, res) => {
+    const { nome, animais } = req.body;
     const habitat = new Habitat(nome, animais);
     console.log(habitat);
     res.status(200).json('Habitat criado');
-})
+});
 
-server.post('/atracao', (req, res) =>{
-    const { nome, habitat} = req.body;
+server.post('/atracao', (req, res) => {
+    const { nome, habitat } = req.body;
     const atracao = new Atracao(nome, habitat);
     console.log(atracao);
     res.status(200).json('Atração criada');
+});
+
+server.post('/zoologico', (req, res) => {
+    const { nome, atracao } = req.body;
+    const zoo = new Zoologico(nome, atracao);
+    console.log(zoo);
+    res.status(200).json('Zoológico criado');
+});
+
+server.get('/reptil', async (req, res) => {
+    const repteis = await Reptil.listarRepteis();
+
+    res.status(200).json(repteis);
 })
 
-server.post('/zoologico', (req, res) =>{
-    const { nome, atracao} = req.body;
-    const zoologico = new Zoologico(nome, atracao);
-    console.log(zoologico);
-    res.status(200).json('Zoologico criado');
+new DatabaseModel().testeConexao().then((resbd) => {
+    if(resbd) {
+        server.listen(port, () => {
+            console.log(`Servidor rodando em http://localhost:${port}`);
+        })
+    } else {
+        console.log('Não foi possível conectar ao banco de dados');
+    }
 })
-

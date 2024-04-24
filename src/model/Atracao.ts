@@ -166,18 +166,18 @@ export class Atracao {
         let queryResult = false;
 
         try {
-                        const queryDeleteAtracao = `DELETE FROM atracao WHERE idatracao=${idAtracao}`;
-                        // Executa a query
-                        await database.query(queryDeleteAtracao)
-                            // Testar o resultado da query
-                            .then((result) => {
-                                // Se o resultado for diferente de zero, a query foi executada com sucesso
-                                if (result.rowCount != 0) {
-                                    // atribui o valor VERDADEIRO a queryResult
-                                    queryResult = true;
-                                }
-                            })
-    
+            const queryDeleteAtracao = `DELETE FROM atracao WHERE idatracao=${idAtracao}`;
+            // Executa a query
+            await database.query(queryDeleteAtracao)
+                // Testar o resultado da query
+                .then((result) => {
+                    // Se o resultado for diferente de zero, a query foi executada com sucesso
+                    if (result.rowCount != 0) {
+                        // atribui o valor VERDADEIRO a queryResult
+                        queryResult = true;
+                    }
+                })
+
             // Retorna o resultado da função
             return queryResult;
             // Caso ocorra algum erro
@@ -185,6 +185,28 @@ export class Atracao {
             // Exibe o erro no console
             console.log(`Erro na consulta: ${error}`);
             // Retorna a variável queryResult com valor FALSE
+            return queryResult;
+        }
+    }
+    static async atualizarAve(ave: Ave, idAve: number): Promise<Boolean> {
+        let queryResult = false;
+
+        try {
+            const queryUpdateAve = `UPDATE animal SET 
+                                    nomeAnimal=${ave.getNomeAnimal().toUpperCase()},
+                                    idadeAnimal=${ave.getIdadeAnimal()},
+                                    generoAnimal=${ave.getGeneroAnimal().toUpperCase()},
+                                    envergadura=${ave.getEnvergadura()}
+                                WHERE idAnimal=${idAve}`;
+            await database.query(queryUpdateAve)
+                .then((result) => {
+                    if (result.rowCount !== 0) {
+                        queryResult = true;
+                    }
+                })
+            return queryResult;
+        } catch (error) {
+            console.log(`Erro na consulta: ${error}`);
             return queryResult;
         }
     }

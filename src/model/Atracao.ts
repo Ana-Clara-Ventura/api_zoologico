@@ -125,7 +125,7 @@ export class Atracao {
         let insertResult = false;
         let queryInsertAtracao: string;
         try {
-            if(!idHabitat) {
+            if (!idHabitat) {
                 // Construção da query para inserir as informações de um Mamifero. A query irá retornar o ID gerado para o animal pelo banco de dados
                 queryInsertAtracao = `INSERT INTO atracao (nomeatracao) 
                                             VALUES 
@@ -154,6 +154,38 @@ export class Atracao {
 
             // Caso a inserção no banco der algum erro, é restorno o valor FALSO para quem chamou a função
             return insertResult;
+        }
+    }
+    /**
+  * Remove um animal do banco de dados
+  * @param idAtracao ID do animal a ser removido
+  * @returns **true** caso deletado, **false** caso erro na função
+  */
+    static async removerAtracao(idAtracao: number): Promise<Boolean> {
+        // Variável para controlar o resultado da função
+        let queryResult = false;
+
+        try {
+                        const queryDeleteAtracao = `DELETE FROM atracao WHERE idatracao=${idAtracao}`;
+                        // Executa a query
+                        await database.query(queryDeleteAtracao)
+                            // Testar o resultado da query
+                            .then((result) => {
+                                // Se o resultado for diferente de zero, a query foi executada com sucesso
+                                if (result.rowCount != 0) {
+                                    // atribui o valor VERDADEIRO a queryResult
+                                    queryResult = true;
+                                }
+                            })
+    
+            // Retorna o resultado da função
+            return queryResult;
+            // Caso ocorra algum erro
+        } catch (error) {
+            // Exibe o erro no console
+            console.log(`Erro na consulta: ${error}`);
+            // Retorna a variável queryResult com valor FALSE
+            return queryResult;
         }
     }
 }

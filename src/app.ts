@@ -130,6 +130,29 @@ server.delete('/remover/animal', async (req, res) => {
         return res.status(401).json('Erro ao remover animal');
     }
 });
+server.delete('/remover/atracao', async (req, res) => {
+    const idAtracao = parseInt(req.query.idAtracao as string);
+
+    const resultado = await Atracao.removerAtracao(idAtracao);
+
+    if(resultado) {
+        return res.status(200).json('Atração foi removido com sucesso');
+    } else {
+        return res.status(401).json('Erro ao remover atração');
+    }
+});
+
+server.delete('/remover/habitat', async (req, res) => {
+    const idHabitat = parseInt(req.query.idHabitat as string);
+
+    const resultado = await Habitat.removerHabitat(idHabitat);
+
+    if(resultado) {
+        return res.status(200).json('Habitat foi removido com sucesso');
+    } else {
+        return res.status(401).json('Erro ao remover habitat');
+    }
+});
 
 new DatabaseModel().testeConexao().then((resbd) => {
     if(resbd) {

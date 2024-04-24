@@ -205,4 +205,51 @@ export class Habitat {
             return insertResult;
         }
     }
+       /**
+    /**
+     * Remove um animal do banco de dados
+     * @param idHabitat ID do animal a ser removido
+     * @returns **true** caso deletado, **false** caso erro na função
+     */
+    static async removerHabitat(idHabitat: number): Promise<Boolean> {
+        // Variável para controlar o resultado da função
+        let queryResult = false;
+        
+        try {
+            // Query para deletar o animal da tabela animal_habitat
+            const queryDeleteAnimalHabitat = `DELETE FROM animal_habitat WHERE idhabitat=${idHabitat}`;
+
+            // Executando a query
+            await database.query(queryDeleteAnimalHabitat)
+            // Testar o resultado da query
+            .then(async (result) => {
+                // Se o resultado for diferente de zero, a query foi executada com sucesso
+                if(result.rowCount != 0) {
+                    // Se a query for executado com sucesso, agora irá remover o animal tabela animal
+
+                    // Query para remover o animal da tabela animal
+                    const queryDeleteHabitat = `DELETE FROM habitat WHERE idhabitat=${idHabitat}`;
+                    // Executa a query
+                    await database.query(queryDeleteHabitat)
+                    // Testar o resultado da query
+                    .then((result) => {
+                        // Se o resultado for diferente de zero, a query foi executada com sucesso
+                        if(result.rowCount != 0) {
+                            // atribui o valor VERDADEIRO a queryResult
+                            queryResult = true;
+                        }
+                    })
+                }
+            })
+
+            // Retorna o resultado da função
+            return queryResult;
+        // Caso ocorra algum erro
+        } catch (error) {
+            // Exibe o erro no console
+            console.log(`Erro na consulta: ${error}`);
+            // Retorna a variável queryResult com valor FALSE
+            return queryResult;
+        }
+    }
 }

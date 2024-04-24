@@ -93,4 +93,46 @@ export class Animal {
     public setGeneroAnimal(genero: string): void {
         this.generoAnimal = genero;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Retorna uma lista com todos os animais cadastrados no sistema.
+     * @returns lista com os animais cadastrados no sistema
+     */
+    static async listarTodosAnimais(): Promise<any> {
+        try {
+            // Query para a consulta no banco de dados
+            const selectAllQuery = `SELECT
+                                        a.idAnimal,
+                                        a.nomeAnimal,
+                                        a.idadeAnimal,
+                                        a.generoAnimal,
+                                        CASE
+                                            WHEN av.idAve IS NOT NULL THEN 'Ave'
+                                            WHEN m.idMamifero IS NOT NULL THEN 'Mamifero'
+                                            WHEN r.idReptil IS NOT NULL THEN 'Reptil'
+                                        END AS tipoAnimal,
+                                        av.envergadura,
+                                        m.especie,
+                                        r.tipoDeEscamas
+                                    FROM
+                                        Animal a
+                                    LEFT JOIN
+                                        Ave av ON a.idAnimal = av.idAve
+                                    LEFT JOIN
+                                        Mamifero m ON a.idAnimal = m.idMamifero
+                                    LEFT JOIN
+                                        Reptil r ON a.idAnimal = r.idReptil;
+            `
+            // Executa a query e retorna o resultado para quem chamou a função
+            return await database.query(selectAllQuery);
+        } catch (error) {
+            // Caso dê algum erro na query do banco, é lançado o erro para quem chamou a função
+            console.log('Erro no modelo');
+            console.log(error);
+            return "error, verifique os logs do servidor";
+        }
+    }
+>>>>>>> b6f4da9b0026943dd6695417f6f11610c449072f
 }

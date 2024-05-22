@@ -1,8 +1,3 @@
 node_modules
 dist
-<<<<<<< HEAD
 .env
-=======
-.env
-.github
->>>>>>> b6f4da9b0026943dd6695417f6f11610c449072f
